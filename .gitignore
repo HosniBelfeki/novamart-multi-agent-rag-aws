@@ -1,0 +1,50 @@
+# ─────────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# ─────────────────────────────────────────────
+# Environment & Secrets
+# ─────────────────────────────────────────────
+# .env is a required project deliverable: it holds resource IDs only, never
+# AWS credentials. Any other local env file stays untracked.
+.env.*
+!.env.example
+not-commit.txt
+run-tests.ps1
+
+# ─────────────────────────────────────────────
+# Claude Code session data
+# ─────────────────────────────────────────────
+.claude/
+
+# ─────────────────────────────────────────────
+# Test / runtime artifacts
+# ─────────────────────────────────────────────
+payload.json
+response.json
+build/
+
+# ─────────────────────────────────────────────
+# AgentCore CLI (agentcore deploy) artifacts
+# ─────────────────────────────────────────────
+agentcore/.cli/logs/
+agentcore/.cache/
+agentcore/agentcore_runtime/
+agentcore/*.zip
+agentcore/.env.local
+agentcore/cdk/node_modules/
+agentcore/cdk/cdk.out/
+agentcore/cdk/dist/
+
+# Local environments and distribution leftovers
+.venv/
+venv/
+_to_delete/
+.DS_Store
+agentcore/.cli/
