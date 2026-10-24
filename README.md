@@ -9,10 +9,71 @@
 | Deliverable | Location |
 |---|---|
 | Completed implementation (Tasks 2, 3, 4, 6) | [`src/agent_orchestrator.py`](src/agent_orchestrator.py) |
-| Three Bedrock Knowledge Bases (Task 5), created and synced | IDs in [`.env`](.env) |
 | Populated `.env` (KB IDs, AgentCore Runtime ARN, Guardrail ID + version) | [`.env`](.env) |
-| Test suite screenshots: **120/120** | [Test results](#test-results-120120) below |
+| Three Bedrock Knowledge Bases on S3 Vectors, synced (Task 5) | [Knowledge Bases](#bedrock-knowledge-bases-s3-vectors-synced) below |
+| `python src/agent_orchestrator.py test` run results | [End-to-end run](#end-to-end-run-python-srcagent_orchestratorpy-test) below |
 | X-Ray Service Map screenshot | [X-Ray Service Map](#x-ray-service-map) below |
+| Test suite screenshots: **120/120** | [Test results](#test-results-120120) below |
+
+### Bedrock Knowledge Bases (S3 Vectors, synced)
+
+Three Knowledge Bases, one per policy domain, all **Available**:
+
+![Knowledge Bases list](screenshots/kb-list.png)
+
+Each Knowledge Base uses **Titan Text Embeddings V2** and the stack's **S3 Vectors** bucket (`VectorStoreBucket` = `udacity-agentcore-vectors-049167128364-436a34d0`) with its own index:
+
+| Knowledge Base | Data source prefix | S3 vector index |
+|---|---|---|
+| `novamart-returns-policy-kb` | `policies/returns/` | `returns-policy-index` |
+| `novamart-shipping-policy-kb` | `policies/shipping/` | `shipping-policy-index` |
+| `novamart-warranty-policy-kb` | `policies/warranty/` | `warranty-policy-index` |
+
+The vector bucket and its three indexes in the S3 console:
+
+![S3 vector bucket with the three indexes](screenshots/kb-vector-bucket-indexes.png)
+
+Each Knowledge Base's storage configuration read back from AWS (`aws bedrock-agent get-knowledge-base`): status ACTIVE, `amazon.titan-embed-text-v2:0`, type `S3_VECTORS`, the vector bucket ARN and the index name. The Knowledge Bases were created through the API with the index name, so the Bedrock console page leaves its "S3 vector index" field blank; this output and the bucket view above show the index each Knowledge Base uses.
+
+![Knowledge Base vector configuration from the AWS CLI](screenshots/kb-vector-config.png)
+
+**Returns** Knowledge Base: embeddings model and S3 Vectors store, then the data source sync (Complete, 2 documents indexed):
+
+![Returns KB vector store](screenshots/kb-returns-vector-store.png)
+![Returns KB data source sync](screenshots/kb-returns-sync.png)
+
+**Shipping** Knowledge Base:
+
+![Shipping KB vector store](screenshots/kb-shipping-vector-store.png)
+![Shipping KB data source sync](screenshots/kb-shipping-sync.png)
+
+**Warranty** Knowledge Base:
+
+![Warranty KB vector store](screenshots/kb-warranty-vector-store.png)
+![Warranty KB data source sync](screenshots/kb-warranty-sync.png)
+
+### End-to-end run: `python src/agent_orchestrator.py test`
+
+The three required scenarios, run locally against the deployed AWS resources and traced to X-Ray:
+
+| Scenario | Routing shown in the run |
+|---|---|
+| "I want to return my wireless headphones from order ORD-27176" (CUST-001) | Orchestrator → Inventory → Refund → Communication (return approved, Premium 60-day window) |
+| "What is the return policy for premium customers?" (CUST-002) | Orchestrator → Policy (3 parallel KB retrievers) → Communication |
+| "How much would 5 items at $29.99 be with a 10% discount?" (CUST-003) | Orchestrator → Communication ($134.96; no Inventory, Policy or Refund) |
+
+The full terminal output spans ten screenshots, from the command (page 1) to the last published X-Ray trace (page 10):
+
+![Run page 1](screenshots/scenarios-page-1.png)
+![Run page 2](screenshots/scenarios-page-2.png)
+![Run page 3](screenshots/scenarios-page-3.png)
+![Run page 4](screenshots/scenarios-page-4.png)
+![Run page 5](screenshots/scenarios-page-5.png)
+![Run page 6](screenshots/scenarios-page-6.png)
+![Run page 7](screenshots/scenarios-page-7.png)
+![Run page 8](screenshots/scenarios-page-8.png)
+![Run page 9](screenshots/scenarios-page-9.png)
+![Run page 10](screenshots/scenarios-page-10.png)
 
 ### X-Ray Service Map
 
