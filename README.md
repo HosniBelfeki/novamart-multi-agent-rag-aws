@@ -2,9 +2,7 @@
 
 **Udacity - School of AI | Course 3.3 | Capstone Project 3.3 NovaMart**
 
-A production-grade multi-agent customer support system built with the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) and Amazon Bedrock AgentCore. The system automatically routes customer support requests to specialist agents, retrieves grounded knowledge via **parallel multi-agent RAG**, enforces enterprise safety guardrails, and maintains shared workflow state across agents - all observable through CloudWatch and X-Ray.
-
-<img width="1140" height="824" alt="NovaMart architecture overview" src="diagrams/architecture-overview.png" />
+**Result: all tests pass, 120/120 (100%).**
 
 ## Submission
 
@@ -13,14 +11,38 @@ A production-grade multi-agent customer support system built with the [Strands A
 | Completed implementation (Tasks 2, 3, 4, 6) | [`src/agent_orchestrator.py`](src/agent_orchestrator.py) |
 | Three Bedrock Knowledge Bases (Task 5), created and synced | IDs in [`.env`](.env) |
 | Populated `.env` (KB IDs, AgentCore Runtime ARN, Guardrail ID + version) | [`.env`](.env) |
-| Test suite: **120/120** (`python tests/test_agent.py all`) | [page 1](screenshots/tests-page-1.png), [page 2](screenshots/tests-page-2.png), [page 3 (score)](screenshots/tests-page-3.png) |
-| X-Ray Service Map: `NovaMart-Orchestrator` → worker agents → Knowledge Bases | [`screenshots/xray-service-map.png`](screenshots/xray-service-map.png) |
+| Test suite screenshots: **120/120** | [Test results](#test-results-120120) below |
+| X-Ray Service Map screenshot | [X-Ray Service Map](#x-ray-service-map) below |
 
-The test output spans three screenshots because the Knowledge Base passages are long; page 3 shows the final score.
+### X-Ray Service Map
 
-<img width="1100" alt="Test suite score 120/120" src="screenshots/tests-page-3.png" />
+Full trace graph: `NovaMart-Orchestrator` → worker agents (Inventory, Policy, Refund, Communication) → Knowledge Bases (returns, shipping, warranty). Two orchestrator nodes appear: the deployed AgentCore Runtime and local test runs.
 
-<img width="1100" alt="X-Ray Service Map" src="screenshots/xray-service-map.png" />
+![X-Ray Service Map](screenshots/xray-service-map.png)
+
+### Test results (120/120)
+
+Output of `python tests/test_agent.py all`. It spans three screenshots because the retrieved Knowledge Base passages are long.
+
+**Page 1: Tasks 2, 3, 4 and the Task 5 Knowledge Base checks**
+
+![Test results page 1](screenshots/tests-page-1.png)
+
+**Page 2: parallel retrieval across the three Knowledge Bases**
+
+![Test results page 2](screenshots/tests-page-2.png)
+
+**Page 3: Task 6 and the final score, 120/120 pts (100%)**
+
+![Test results page 3](screenshots/tests-page-3.png)
+
+---
+
+## Project overview
+
+A production-grade multi-agent customer support system built with the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) and Amazon Bedrock AgentCore. The system automatically routes customer support requests to specialist agents, retrieves grounded knowledge via **parallel multi-agent RAG**, enforces enterprise safety guardrails, and maintains shared workflow state across agents - all observable through CloudWatch and X-Ray.
+
+<img width="1140" height="824" alt="NovaMart architecture overview" src="diagrams/architecture-overview.png" />
 
 
 
