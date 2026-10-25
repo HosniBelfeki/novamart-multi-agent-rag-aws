@@ -11,8 +11,7 @@ __pycache__/
 # ─────────────────────────────────────────────
 # Environment & Secrets
 # ─────────────────────────────────────────────
-# .env is a required project deliverable: it holds resource IDs only, never
-# AWS credentials. Any other local env file stays untracked.
+.env
 .env.*
 !.env.example
 not-commit.txt

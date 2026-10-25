@@ -9,7 +9,6 @@
 | Deliverable | Location |
 |---|---|
 | Completed implementation (Tasks 2, 3, 4, 6) | [`src/agent_orchestrator.py`](src/agent_orchestrator.py) |
-| Populated `.env` (KB IDs, AgentCore Runtime ARN, Guardrail ID + version) | [`.env`](.env) |
 | Three Bedrock Knowledge Bases on S3 Vectors, synced (Task 5) | [Knowledge Bases](#bedrock-knowledge-bases-s3-vectors-synced) below |
 | `python src/agent_orchestrator.py test` run results | [End-to-end run](#end-to-end-run-python-srcagent_orchestratorpy-test) below |
 | X-Ray Service Map screenshot | [X-Ray Service Map](#x-ray-service-map) below |
